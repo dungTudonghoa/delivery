@@ -81,7 +81,9 @@ Các project khác có thể `add_subdirectory(delivery)` rồi link `delivery_c
 
 | Module | Vai trò |
 |---|---|
-| `include/delivery/domain.hpp`, `src/domain.cpp` | Struct, eligibility duy nhất, validator, hình học, graph/features |
+| `include/delivery/domain.hpp`, `src/domain.cpp` | Struct, eligibility duy nhất và validator |
+| `include/delivery/geometry.hpp`, `src/geometry.cpp` | Proper segment intersection |
+| `include/delivery/graph.hpp`, `src/graph.cpp` | Bipartite graph và normalized features |
 | `include/delivery/ga.hpp`, `src/ga.cpp` | GA, prior sampling, matching repair, ngân sách và thống kê |
 | `include/delivery/io.hpp`, `src/io.cpp` | Định dạng dữ liệu, config, generator, CSV allocation |
 | `include/delivery/gnn.hpp`, `src/gnn.cpp` | LibTorch MPNN hai chiều, masked edge scores, checkpoint |

@@ -9,7 +9,7 @@ if(DELIVERY_WITH_TORCH)
   # Apply LibTorch's ABI flags to ALL targets, including the shared domain API.
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 endif()
-add_library(delivery_core src/domain.cpp src/ga.cpp src/io.cpp)
+add_library(delivery_core src/domain.cpp src/geometry.cpp src/graph.cpp src/ga.cpp src/io.cpp)
 target_include_directories(delivery_core PUBLIC include)
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
   target_compile_options(delivery_core PRIVATE -Wall -Wextra -Wpedantic)

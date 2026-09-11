@@ -1,3 +1,4 @@
+#include "delivery/graph.hpp"
 #include "delivery/gnn.hpp"
 #include "delivery/io.hpp"
 #include <chrono>

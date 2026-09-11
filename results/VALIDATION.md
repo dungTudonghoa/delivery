@@ -26,8 +26,21 @@ The local sanitizer build uses AddressSanitizer and UndefinedBehaviorSanitizer. 
 
 ```bash
 mkdir -p build-core
-g++ -std=c++20 -O2 -Wall -Wextra -Werror -Wpedantic -I include src/domain.cpp src/ga.cpp src/io.cpp tests/test_core.cpp -o build-core/test_core
+g++ -std=c++20 -O2 -Wall -Wextra -Werror -Wpedantic -I include src/domain.cpp src/geometry.cpp src/graph.cpp src/ga.cpp src/io.cpp tests/test_core.cpp -o build-core/test_core
 build-core/test_core
 ```
 
-The primary remaining verification gate is a successful LibTorch CI build/test and matched evaluation. The primary research task after that is testing guidance on larger, realistic held-out instances with multiple seeds.
+The successful remote verification below closes the initial LibTorch build/test gate. The remaining research task is testing guidance on larger, realistic held-out instances with multiple seeds.
+
+## Successful remote LibTorch verification
+
+[GitHub Actions run 34558340224](https://github.com/dungTudonghoa/delivery/actions/runs/34558340224), commit `c84ab96d194349ae6a4a6a74ba51cee08e84dad4`, completed successfully on Ubuntu 24.04 with GCC 13.3 and CPU LibTorch 2.7.1:
+
+- CMake core-only build/test: passed.
+- CMake full build of all targets: passed.
+- Core and GNN CTest suites: **2/2 passed**. Neural tests cover variable shapes, receiver/slot permutation equivariance, masked normalization, UNUSED/no-edge handling, learning-loss decrease with encoder gradients, and checkpoint round trip.
+- Full C++ smoke generation/training/matched evaluation: passed.
+- Validation NLL for the two smoke epochs: **1.02569 → 0.971827** (hidden=16, layers=2, batch=4, seed=42, learning rate=0.001).
+- [CSV artifact](https://github.com/dungTudonghoa/delivery/actions/runs/34558340224/artifacts/10183417515) contains the matched evaluation and training log.
+
+This closes the initial LibTorch compilation/runtime gap for that commit. The subsequent module separation is also covered by the same workflow on its own commit. Two epochs on tiny synthetic data are an integration check, not evidence of improved optimization performance.

@@ -1,3 +1,5 @@
+#include "delivery/geometry.hpp"
+#include "delivery/graph.hpp"
 #include "delivery/io.hpp"
 #include <cmath>
 #include <iostream>

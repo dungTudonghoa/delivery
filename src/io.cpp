@@ -1,4 +1,5 @@
 #include "delivery/io.hpp"
+#include <cmath>
 #include <fstream>
 #include <iomanip>
 #include <random>

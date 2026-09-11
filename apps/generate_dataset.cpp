@@ -1,3 +1,4 @@
+#include "delivery/graph.hpp"
 #include "delivery/io.hpp"
 #include <iostream>
 #include <fstream>

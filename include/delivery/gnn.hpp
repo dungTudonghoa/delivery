@@ -1,4 +1,5 @@
 #pragma once
+#include "delivery/graph.hpp"
 #include "delivery/domain.hpp"
 #include <torch/torch.h>
 namespace delivery {
