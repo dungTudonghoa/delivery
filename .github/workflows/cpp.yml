@@ -1,0 +1,35 @@
+name: C++ baseline
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  core:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -DDELIVERY_WITH_TORCH=OFF -DCMAKE_BUILD_TYPE=Debug
+      - run: cmake --build build -j2
+      - run: ctest --test-dir build --output-on-failure
+  libtorch:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download pinned CPU LibTorch
+        run: |
+          curl --fail --location --retry 3 'https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-2.7.1%2Bcpu.zip' -o /tmp/libtorch.zip
+          unzip -q /tmp/libtorch.zip -d /tmp
+      - run: cmake -S . -B build -DCMAKE_PREFIX_PATH=/tmp/libtorch -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE='-O1 -DNDEBUG'
+      - run: cmake --build build -j1
+      - run: ctest --test-dir build --output-on-failure
+      - name: C++ end-to-end smoke
+        run: |
+          build/generate_dataset data/generated/ci 30 1000 configs/baseline.cfg
+          build/train_gnn data/generated/ci/train data/generated/ci/val models/smoke.pt 2 42 16 2 4 0.001
+          build/evaluate_gnn_ga data/generated/ci/test models/smoke.pt configs/baseline.cfg 42 2 results/ci-matched.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cpp-smoke-results
+          path: |
+            results/ci-matched.csv
+            models/smoke.pt.csv
